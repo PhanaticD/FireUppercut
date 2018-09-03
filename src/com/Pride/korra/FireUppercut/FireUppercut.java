@@ -16,7 +16,7 @@ import com.projectkorra.projectkorra.util.ParticleEffect;
 
 public class FireUppercut extends FireAbility implements AddonAbility {
 	
-	private static String path = "ExtraAbilities.Prride.AirCocoon.";
+	private static String path = "ExtraAbilities.Prride.FireUppercut.";
 	private long cooldown;
 	private double damage;
 	private int fireTicks;
