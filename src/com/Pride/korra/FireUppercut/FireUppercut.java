@@ -78,12 +78,12 @@ public class FireUppercut extends FireAbility implements AddonAbility {
 			remove();
 			return;
 		}
-		Location newLoc = GeneralMethods.getRightSide(player.getLocation(), .55).add(0, 2.8, 0);
+		Location newLoc = GeneralMethods.getRightSide(player.getLocation(), .55).add(0, 5, 0);
 		Vector dir = GeneralMethods.getDirection(location, newLoc);
 		dir.normalize().multiply(0.5D);
 		location.add(dir);
 		
-		if (location.distanceSquared(newLoc) < 0.1 * 0.1) {
+		if (location.distanceSquared(newLoc) < 0.22 * 0.22) {
 			bPlayer.addCooldown(this);
 			remove();
 			return;
@@ -91,20 +91,16 @@ public class FireUppercut extends FireAbility implements AddonAbility {
 		ParticleEffect.FLAME.display(location, 0.2F, 0.2F, 0.2F, 0F, 8);
 		ParticleEffect.CRIT.display(location, 0.2F, 0.2F, 0.2F, 0F, 8);
 		
-		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 2)) {
+		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 2.8)) {
 			if (entity instanceof LivingEntity && entity.getEntityId() != player.getEntityId()) {
-				launchPlayer(entity);
+				ParticleEffect.CRIT.display(entity.getLocation().add(0, 1, 0), 0.3F, 0.3F, 0.3F, 0F, 10);
+				Vector vec = entity.getVelocity();
+				vec.setY(0.7);
+				entity.setVelocity(vec.multiply(2));
 				DamageHandler.damageEntity(entity, damage, this);
 				entity.setFireTicks(fireTicks);
 			}
 		}
-	}
-	
-	private void launchPlayer(Entity entity) {
-		Vector vec = entity.getVelocity();
-		vec.setY(0.7);
-		entity.setVelocity(vec);
-		return;
 	}
 
 	@Override
