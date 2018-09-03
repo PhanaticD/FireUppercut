@@ -20,6 +20,7 @@ public class FireUppercut extends FireAbility implements AddonAbility {
 	private long cooldown;
 	private double damage;
 	private int fireTicks;
+	private double radius;
 	
 	private Location location;
 
@@ -32,6 +33,7 @@ public class FireUppercut extends FireAbility implements AddonAbility {
 		cooldown = ConfigManager.getConfig().getLong(path + "Cooldown");
 		damage = ConfigManager.getConfig().getDouble(path + "Damage");
 		fireTicks = ConfigManager.getConfig().getInt(path + "FireTicks");
+		radius = ConfigManager.getConfig().getDouble(path + "Radius");
 		location = GeneralMethods.getRightSide(player.getLocation(), .55).add(0, 0.8, 0);
 		start();
 	}
@@ -91,12 +93,12 @@ public class FireUppercut extends FireAbility implements AddonAbility {
 		ParticleEffect.FLAME.display(location, 0.2F, 0.2F, 0.2F, 0F, 8);
 		ParticleEffect.CRIT.display(location, 0.2F, 0.2F, 0.2F, 0F, 8);
 		
-		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 2.8)) {
+		for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, radius)) {
 			if (entity instanceof LivingEntity && entity.getEntityId() != player.getEntityId()) {
 				ParticleEffect.CRIT.display(entity.getLocation().add(0, 1, 0), 0.3F, 0.3F, 0.3F, 0F, 10);
 				Vector vec = entity.getVelocity();
 				vec.setY(0.7);
-				entity.setVelocity(vec.multiply(2));
+				entity.setVelocity(vec.multiply(1.4));
 				DamageHandler.damageEntity(entity, damage, this);
 				entity.setFireTicks(fireTicks);
 			}
@@ -136,6 +138,7 @@ public class FireUppercut extends FireAbility implements AddonAbility {
 		ConfigManager.getConfig().addDefault(path + "Cooldown", 4500);
 		ConfigManager.getConfig().addDefault(path + "Damage", 4);
 		ConfigManager.getConfig().addDefault(path + "FireTicks", 100);
+		ConfigManager.getConfig().addDefault(path + "Radius", 3);
 		ConfigManager.defaultConfig.save();
 	}
 
